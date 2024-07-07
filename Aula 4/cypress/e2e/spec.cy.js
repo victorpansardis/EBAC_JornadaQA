@@ -1,0 +1,60 @@
+/// <reference types="cypress"/>
+
+describe('US-012 - Funcionalidade: Cadastro de membros', () => {
+  it('Deve fazer o cadastro de campos obrigatórios', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-firstname').type("Victor")
+    cy.get('#signup-lastname').type("Pansardis")
+    cy.get('#signup-email').type("victor.pansardis@email2.com")
+    cy.get('#signup-phone').type("1234567890")
+    cy.get('#signup-password').type("SenhaForte@123")
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'Cadastro realizado com sucesso!')
+  })
+  it('Validação do formato do email inválido', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-firstname').type("Victor")
+    cy.get('#signup-lastname').type("Pansardis")
+    cy.get('#signup-email').type("victor.email.com")
+    cy.get('#signup-phone').type("1234567890")
+    cy.get('#signup-password').type("SenhaForte@123")
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'E-mail deve ser um email válido')
+  })
+  it('Validação do formato do email inválido', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'Nome não pode estar vazio')
+  })
+  it('Validação do formato do email inválido', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-firstname').type("Victor")
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'Sobrenome não pode estar vazio')
+  })
+  it('Validação do formato do email inválido', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-firstname').type("Victor")
+    cy.get('#signup-lastname').type("Pansardis")
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'E-mail não pode estar vazio')
+  })
+  it('Validação do formato do email inválido', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-firstname').type("Victor")
+    cy.get('#signup-lastname').type("Pansardis")
+    cy.get('#signup-email').type("victor@email.com")
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'Senha não pode estar vazia')
+  })
+  it('Validação de bloqueio de senha fraca', () => {
+    cy.visit('http://127.0.0.1:8080/')
+    cy.get('#signup-firstname').type("Victor")
+    cy.get('#signup-lastname').type("Pansardis")
+    cy.get('#signup-email').type("victor@email.com")
+    cy.get('#signup-password').type("Senha")
+    cy.get('#signup-button').click()
+    cy.get('#signup-response').should('contain', 'Senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial (!@#$&*)')
+  })
+
+})
